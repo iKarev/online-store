@@ -1,7 +1,11 @@
 <template>
   <v-app light id="app">
     <v-toolbar dark color="primary">
-      <v-toolbar-title class="title">Плюшевые мишки</v-toolbar-title>
+      <v-toolbar-title class="title">
+        <router-link :to="'/'">
+          <span class="white--text border-none">Плюшевые мишки</span>
+        </router-link>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <os-cart-info></os-cart-info>
     </v-toolbar>

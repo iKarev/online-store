@@ -1,10 +1,10 @@
 <template>
   <section class="pr_8">
     <v-badge color="red">
-      <template v-slot:badge>
-        <span>4</span>
+      <template v-slot:badge v-if="cartLength">
+        <span>{{ cartLength }}</span>
       </template>
-      <v-btn icon>
+      <v-btn icon @click="toCart()">
         <i class="fas fa-shopping-cart"></i>
       </v-btn>
     </v-badge>
@@ -16,6 +16,16 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'CartInfo',
+  methods: {
+    toCart() {
+      this.$router.push('/cart')
+    },
+  },
+  computed: {
+    cartLength(): number {
+      return this.$store.getters.cartLength
+    },
+  },
 })
 </script>
 

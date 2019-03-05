@@ -7,4 +7,10 @@ export default {
   currentProduct(state: State) {
     return state.currentProduct
   },
+  cart(state: State) {
+    return state.cart
+  },
+  cartLength(state: State) {
+    return state.cart.reduce((sum, item) => sum += item.count, 0)
+  },
 }

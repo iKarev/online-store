@@ -16,7 +16,7 @@
       <v-card-actions class="w_100">
         <v-layout justify-end row fill-height>
           <v-btn
-            @click="addToCart($event)"
+            @click="addToCart($event, product)"
             icon color="success"
             :loading="addingToCart"
             :disabled="addingToCart"
@@ -31,6 +31,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { IProduct } from '@/interfaces/product'
 
 export default Vue.extend({
   props: ['product'],
@@ -42,13 +43,13 @@ export default Vue.extend({
   },
   methods: {
     goToProduct() {
-      console.log(123)
       this.$router.push({path: `/product/${this.$props.product.id}`})
     },
-    addToCart(e: Event) {
+    addToCart(e: Event, product: IProduct) {
       e.stopPropagation()
-    }
-  }
+      this.$store.commit('addProductToCart', product)
+    },
+  },
 })
 </script>
 

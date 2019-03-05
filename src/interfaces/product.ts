@@ -5,3 +5,8 @@ export interface IProduct {
   url: string,
   thumbnailUrl: string,
 }
+
+export interface IProductInCart {
+  product: IProduct,
+  count: number,
+}

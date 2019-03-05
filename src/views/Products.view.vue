@@ -1,15 +1,13 @@
 <template>
-  <div>
-    <v-layout row wrap class="pt_12">
+  <div class="h_50 pt_12">
+    <os-loader :size="80" v-if="!products.length"></os-loader>
+    <v-layout v-if="products.length" row wrap >
       <v-flex
         class="p_32" xs6 sm4 md3 lg2
         v-bind:key="product.id"
         v-for="product in products"
       >
-        <os-product
-          :product="product"
-          >
-        </os-product>
+        <os-product :product="product" />
       </v-flex>
       <v-flex class="p_32" xs6 sm4 md3 lg2>
         <v-btn
@@ -28,12 +26,14 @@
 <script lang="ts">
 import Vue from 'vue'
 import Product from '@/components/Product.component.vue'
+import Loader from '@/components/Loader.component.vue'
 import { IProduct } from '@/interfaces/product'
 
 export default Vue.extend({
   name: 'products',
   components: {
     'os-product': Product,
+    'os-loader': Loader,
   },
   data() {
     return {
@@ -41,9 +41,9 @@ export default Vue.extend({
     }
   },
   methods: {
-    showMoreProducts () {
+    showMoreProducts() {
       this.productsLimit += 12
-    }
+    },
   },
   computed: {
     products(): IProduct[] {
@@ -51,7 +51,8 @@ export default Vue.extend({
     },
   },
   created() {
-    this.$store.dispatch('getProducts')
+    if (!this.products.length)
+      this.$store.dispatch('getProducts')
   },
 })
 </script>

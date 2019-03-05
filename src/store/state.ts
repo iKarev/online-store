@@ -1,5 +1,7 @@
+import { getCart } from '@/helpers/storage'
+
 export default {
-  cart: [],
+  cart: getCart() || [],
   products: [],
   currentProduct: null,
 }

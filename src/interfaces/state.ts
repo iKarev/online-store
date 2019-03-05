@@ -1,7 +1,7 @@
-import { IProduct } from './product'
+import { IProduct, IProductInCart } from './product'
 
 export default interface IState {
-  cart: IProduct[],
+  cart: IProductInCart[],
   products: IProduct[],
   currentProduct: IProduct | null
 }
