@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Products from './views/Products.vue'
-import Item from './views/Item.vue'
-import Cart from './views/Cart.vue'
+import Products from './views/Products.view.vue'
+import Product from './views/Product.view.vue'
+import Cart from './views/Cart.view.vue'
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -14,9 +15,9 @@ export default new Router({
       component: Products,
     },
     {
-      path: '/item/:id',
-      name: 'item',
-      component: Item,
+      path: '/product/:id',
+      name: 'product',
+      component: Product,
     },
     {
       path: '/cart',
