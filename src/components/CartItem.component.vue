@@ -5,15 +5,18 @@
         <div class="item-image-container">
           <img class="w_100 h_100" :src="item.product.thumbnailUrl" />
         </div>
-        <p class="item-title body-1 mb-0 mh_12">{{ item.product.title }}</p>
+        <v-layout column align-start justify-space-between fill-height>
+          <p class="item-title body-1 mb-0 mh_12">{{ item.product.title }}</p>
+          <h3 class="display-1 mb-0 mh_12">${{ item.product.price }}</h3>
+        </v-layout>
       </v-layout>
     </v-flex>
     <v-flex class="pr_8">
-      <v-layout justify-end align-center row fill-height>
+      <v-layout v-bind="justifyBinding" align-center row fill-height>
         <v-btn @click="goToProduct(item.product.id)" icon color="primary">
           <i class="fas fa-search"></i>
         </v-btn>
-        <v-btn @click="decrease(item.product.id)" icon color="warning">
+        <v-btn :disabled="item.count < 1" @click="decrease(item.product.id)" icon color="warning">
           <i class="fas fa-minus"></i>
         </v-btn>
         <h3 class="display-1 mb-0 mh_12">{{ item.count }}</h3>
@@ -41,9 +44,17 @@ export default Vue.extend({
     }
   },
   computed: {
-    directionBinding(): {column: boolean} {
+    directionBinding(): object {
       const binding = {column: false}
-      if (this.$vuetify.breakpoint.mdAndDown) binding.column = true
+      if (this.$vuetify.breakpoint.smAndDown) binding.column = true
+      return binding
+    },
+    justifyBinding(): object {
+      const binding: any = {}
+      if (this.$vuetify.breakpoint.smAndDown)
+        binding['justify-center'] = true
+      else
+        binding['justify-end'] = true
       return binding
     },
   },
@@ -66,7 +77,6 @@ export default Vue.extend({
 
 <style lang="sass" scoped>
 .item
-  height: 100px
   overflow: hidden
   &-title
     width: calc(100% - 100px)

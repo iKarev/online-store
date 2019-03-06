@@ -14,7 +14,8 @@
         </v-card-title>
       </section>
       <v-card-actions class="w_100">
-        <v-layout justify-end row fill-height>
+        <v-layout justify-space-between align-center row fill-height>
+          <h3 class="display-1 ml_4">${{ product.price }}</h3>
           <v-btn
             @click="addToCart($event, product)"
             icon color="success"

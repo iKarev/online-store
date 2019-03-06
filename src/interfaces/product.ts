@@ -1,6 +1,7 @@
 export interface IProduct {
-  albumId: string,
-  id: string,
+  albumId: number,
+  id: number,
+  price: number,
   title: string,
   url: string,
   thumbnailUrl: string,

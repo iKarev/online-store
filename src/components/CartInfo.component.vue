@@ -1,8 +1,8 @@
 <template>
   <section class="pr_8">
     <v-badge color="red">
-      <template v-slot:badge v-if="cartLength">
-        <span>{{ cartLength }}</span>
+      <template v-slot:badge v-if="productsInCart">
+        <span>{{ productsInCart }}</span>
       </template>
       <v-btn icon @click="toCart()">
         <i class="fas fa-shopping-cart"></i>
@@ -22,8 +22,8 @@ export default Vue.extend({
     },
   },
   computed: {
-    cartLength(): number {
-      return this.$store.getters.cartLength
+    productsInCart(): number {
+      return this.$store.getters.productsInCart
     },
   },
 })

@@ -9,10 +9,10 @@
       >
         <os-product :product="product" />
       </v-flex>
-      <v-flex class="p_32" xs6 sm4 md3 lg2>
+      <v-flex v-if="productsLimit < allProducts" class="p_32" xs6 sm4 md3 lg2>
         <v-btn
           @click="showMoreProducts"
-          class="w_100 m_0"
+          class="m_0"
           color="success"
         >
           <span class="mr_4">Показать ещё</span>
@@ -49,6 +49,9 @@ export default Vue.extend({
     products(): IProduct[] {
       return this.$store.getters.products.slice(0, this.productsLimit)
     },
+    allProducts(): number {
+      return this.$store.getters.products.length
+    }
   },
   created() {
     if (!this.products.length)

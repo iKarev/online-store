@@ -5,10 +5,14 @@ import { saveCart } from '@/helpers/storage'
 
 export default {
   setProductsList(state: State, products: IProduct[]) {
-    state.products = products
+    state.products = products.map(p => {
+      p.price = setFakePrice(p)
+      return p
+    })
   },
 
   setCurrentProduct(state: State, product: IProduct) {
+    product.price = setFakePrice(product)
     state.currentProduct = product
   },
   clearCurrentProduct(state: State) {
@@ -21,14 +25,18 @@ export default {
     if (productIndex > -1)
       cart[productIndex].count++
     else
-      cart.push({product, count: 1})
+      cart.unshift({product, count: 1})
     saveCart(cart)
   },
-  decreaseProductInCart(state: State, id: string) {
-    state.cart[getProductIndex(state.cart, id)].count--
+  decreaseProductInCart(state: State, id: number) {
+    const item = state.cart[getProductIndex(state.cart, id)]
+    if (item.count < 1)
+      return
+
+    item.count--
     saveCart(state.cart)
   },
-  removeProductFromCart(state: State, id: string) {
+  removeProductFromCart(state: State, id: number) {
     state.cart.splice(getProductIndex(state.cart, id), 1)
     saveCart(state.cart)
   },
@@ -38,14 +46,11 @@ export default {
   },
 }
 
-function getProductIndex(cart: IProductInCart[], id: string) {
+function getProductIndex(cart: IProductInCart[], id: number) {
   return cart.findIndex(item => item.product.id === id)
 }
 
-
-
-
-
-
-
-
+// Имитация единой цены, приходящей с сервера
+function setFakePrice(p: IProduct): number {
+  return (p.albumId * (p.id % 13) * 7.3) + 9
+}

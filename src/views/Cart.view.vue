@@ -1,15 +1,15 @@
 <template>
   <v-layout class="pt_12" column>
-    <v-flex xs12 offset-xs0 sm10 offset-sm1 class="relative mb_8">
-      <v-btn @click="goBack()" class="ml_0">
-        <i class="fas fa-undo"></i>
-        <span class="ml_8">К каталогу</span>
-      </v-btn>
-    </v-flex>
+    <os-go-back></os-go-back>
     <v-flex xs12 offset-xs0 sm10 offset-sm1>
-      <h3 v-if="!products.length" class="ta-c relative display-1 white--text">
+      <h3 v-if="!boughtProducts && !products.length" class="ta-c relative display-1 white--text">
         Ваша корзина пуста. Добавьте мишек!
       </h3>
+      <v-card class="relative success white--text p_32 ta-c" v-if="boughtProducts">
+        <p class="headline">
+          Поздравляем! Вы купили плюшевых мишек: {{ boughtProducts }}!
+        </p>
+      </v-card>
       <v-layout v-if="products.length" column>
         <v-flex
           v-bind:key="product.id"
@@ -19,16 +19,26 @@
             <os-cart-item :item="product"></os-cart-item>
           </v-card>
         </v-flex>
-        <v-flex>
+        <v-layout class="mt_8" row justify-space-between>
+          <v-btn
+            @click="buyProducts()"
+            class="m_0"
+            color="success"
+            :loading="buyingInProgress"
+            :disabled="buyingInProgress"
+          >
+            <span class="mr_4">Оплатить ${{cartCost}}</span>
+          </v-btn>
           <v-btn
             @click="clearCart()"
             class="m_0"
             color="error"
+            :disabled="buyingInProgress"
           >
             <span class="mr_4">Очистить корзину</span>
             <i class="fas fa-times"></i>
           </v-btn>
-        </v-flex>
+        </v-layout>
       </v-layout>
     </v-flex>
   </v-layout>
@@ -38,6 +48,7 @@
 import Vue from 'vue'
 import Loader from '@/components/Loader.component.vue'
 import CartItem from '@/components/CartItem.component.vue'
+import GoBack from '@/components/GoBack.component.vue'
 import { IProduct } from '@/interfaces/product'
 
 export default Vue.extend({
@@ -45,8 +56,23 @@ export default Vue.extend({
   components: {
     'os-loader': Loader,
     'os-cart-item': CartItem,
+    'os-go-back': GoBack,
+  },
+  data() {
+    return {
+      boughtProducts: 0,
+      buyingInProgress: false,
+    }
   },
   methods: {
+    buyProducts() {
+      this.buyingInProgress = true
+      setTimeout(() => {
+        this.buyingInProgress = false
+        this.boughtProducts = this.$store.getters.productsInCart
+        this.$store.commit('clearCart')
+      }, Math.random() * 3000)
+    },
     clearCart() {
       this.$store.commit('clearCart')
     },
@@ -55,9 +81,12 @@ export default Vue.extend({
     },
   },
   computed: {
-    products(): IProduct {
+    products(): IProduct[] {
       return this.$store.getters.cart
     },
+    cartCost(): number {
+      return this.$store.getters.cartCost
+    }
   },
 })
 </script>

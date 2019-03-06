@@ -1,21 +1,17 @@
 <template>
   <v-layout class="pt_12" column>
-    <v-flex xs12 offset-xs0 sm10 offset-sm1 class="relative mb_8">
-      <v-btn @click="goBack()" class="ml_0">
-        <i class="fas fa-undo"></i>
-        <span class="ml_8">К каталогу</span>
-      </v-btn>
-    </v-flex>
+    <os-go-back></os-go-back>
     <v-flex xs12 offset-xs0 sm10 offset-sm1>
       <os-loader :size="80" v-if="!product"></os-loader>
       <v-card v-if="product">
         <v-layout row v-bind="directionBinding" fill-height>
           <section class="p_12 ta-c">
-            <img :src="product.url" />
+            <img class="max-w_100" :src="product.url" />
           </section>
           <section class="p_12">
             <v-layout column justify-space-between v-bind="directionBinding" fill-height>
-              <h3 class="display-2">{{ product.title }}</h3>
+              <h4 class="display-1">{{ product.title }}</h4>
+              <h3 class="display-1 mb-0 mh_12">${{ product.price }}</h3>
               <v-btn
                 class="mt_12"
                 @click="addToCart($event)"
@@ -35,12 +31,14 @@
 <script lang="ts">
 import Vue from 'vue'
 import Loader from '@/components/Loader.component.vue'
+import GoBack from '@/components/GoBack.component.vue'
 import { IProduct } from '@/interfaces/product'
 
 export default Vue.extend({
   name: 'products',
   components: {
     'os-loader': Loader,
+    'os-go-back': GoBack,
   },
   methods: {
     addToCart() {
@@ -68,3 +66,8 @@ export default Vue.extend({
   },
 })
 </script>
+
+<style lang="sass" scoped>
+  .max-w_100
+    max-width: 100%
+</style>

@@ -10,7 +10,10 @@ export default {
   cart(state: State) {
     return state.cart
   },
-  cartLength(state: State) {
+  productsInCart(state: State) {
     return state.cart.reduce((sum, item) => sum += item.count, 0)
+  },
+  cartCost(state: State) {
+    return state.cart.reduce((sum, item) => sum += (item.product.price * item.count), 0).toFixed(2)
   },
 }
